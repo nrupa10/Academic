@@ -1,0 +1,481 @@
+student(sid, name, course)
+sid	name	course
+1	ab	cse
+2	cd	cse
+3	ef	cse
+1	ab	cse
+
+college(id, name, cid, fid, fname, sal)
+
+id	name	cid	fid	fname	sal
+1	ab	1	1	abc	66000
+2	cd	1	1	abc	66000
+3	ef	1	1	abc	66000
+4	gh	2	2	def	88000
+5	ad	3	3	ghi	85000
+6	ab	2	2	def	88000
+=========================================================================================
+functional dependency: x->y i.e. x determines y.
+	x is determined attribute
+	y is dependent attribute
+
+t1(x)=t2(x) then t1(y)=t2(y)
+sno->name	sno->name	sno->name	sno->name
+sno	name	sno	name	sno	name	sno	name
+1	ab	1	ab	1	ab	1	ab
+1	ab	2	ab	2	cd	1	cd
+=========================================================================================
+RollNo	Name	Marks	Dept	Course
+10	A	88	CSE	c1
+20	B	90	EEE	c1
+30	A	88	CSE	c2
+40	B	90	EEE	c3
+50	C	80	INF	c3
+60	D	80	ECE	c2
+
+
+CHECK whether the following FD's are valid or not from the above Relation:
+R->N,M
+D,C->N
+R,M->D
+N->C
+N,M,D->R
+D->C, 	- 	
+C->D, 	- 	
+M->D, 	-	
+R->N, 	-	
+N->R, 	-	
+R->M, 	-	
+R,N->M,	-	
+N->M,	-	
+N,M->D,	-	
+N,M->D,C-	
+=======================================================================================
+Trivial FD:  x->y if x integration y is not null or y is subset of x or x->x
+
+Non-Trivial FD: x->y if x integration y is null.
+=======================================================================================
+Armstrong Axioms Or inference rules:
+
+Reflexivity: x->x or x->y when y is subset of x
+
+Transitive: if x->y , y->z then x->z
+
+Augmentation: x->y and a is an attribute then xa->ya
+
+Union: if x->y and x->z then x->yz
+
+Decomposition: x->yz then x->y and x->z
+
+Pseudo Transitive: x->y and yA->z then xA->z
+
+x={1,2,3} y={1,2,3} then y is subset of x but it is not a proper subset.
+x={1,2,3,4} y={1,2,3} then y is proper subset of x.
+=========================================================================================
+super key: set of attributes which uniquely determines the tuples or rows of a relation
+
+candidate key: set of attributes which uniquely determines the tuples or rows of a relation.
+ck is a proper subset of super key.
+
+closure set: is used to determine the set of attributes which are from given FD's
+=========================================================================================
+Procedure to find the Candidate Key from the given Relation and FD's:
+Step 0: Start.
+Step 1: Necessary Attributes:
+	find X such that
+			- A is an attribute in Relation R, 
+		but A does not occur in either LHS or RHS of any FD in F.
+			- A occurs only in the LHS of the fd's in F.
+Step 2:
+	Useless Attributes:
+	find Y such that
+			- if A occurs only in the RHS of the fd's in F.
+Step 3:
+	Other Attributes:
+	find Z such that
+			- if A is neither necessary or useless.
+	if X is empty go to step 5.
+Step 4:
+	Compute X+ i.e. X closure.
+	if X is candidate key, Go to Step 6.
+Step 5:
+	Let L=(Z1,Z2,....,Zn) be the list of all non-empty subsets of Z such that L is arranged in ascending order of the size of Zi.
+	Add all attributes in X to each Zi in L and compute closure to check for candidate key's.
+
+Step 6: Display the Candidate Keys.
+
+Step 7: End.
+=========================================================================================
+P: For R:{A,B,C,D,E} FD:{A->B, B->C, C->D, D->E}. Find Candidate Key.
+Sol:
+	Given, R:{A,B,C,D,E} 
+	FD:{A->B, B->C, C->D, D->E}.
+	Necessary Attributes: x={A} 
+	Useless Attributes: y={E} 
+	Intermediate Attributes: z={B,C,D}
+	A+->ABCDE
+	CANDIATE KEY={A}
+	PRIME ATTRIBUTES = {A}
+-----------------------------------------------------------------------------------------
+P: For R:{A,B,C,D,E,G} FD:{AB->C, C->D, AD->E}
+Sol:
+	Given, R:{A,B,C,D,E,G}
+	FD:
+		AB->C
+		C->D
+		AD->E
+	X={G,A,B}
+	Y={E}
+	Z={C,D}
+	GAB+->GABCDE	
+	CANDIATE KEY={GAB}
+	PRIME ATTRIBUTES = {A,B,G}
+-----------------------------------------------------------------------------------------
+P: For R:{A,B,C,D} FD:{AB->CD, C->A, D->A}
+Sol:
+	Given, R:{A,B,C,D}
+	FD:
+		AB->CD
+		C->A
+		D->A
+	X={B}
+	Y={}
+	Z={A,C,D}
+	B+->B  NOT A CANDIDATE KEY
+	L={A,C,D,AC,AD,CD,ACD}
+	BA+->BACD	
+	BC+->BCAD
+	BD+->BDAC
+	BAC+ 	=> BAC IS NOT A CANDIDATE KEY SINCE BA IS SUBSET OF BAC.
+	BAD+ 	=> BAD IS NOT A CANDIDATE KEY SINCE BA IS SUBSET OF BAD.
+	BCD+ 	=> BCD IS NOT A CANDIDATE KEY SINCE BC IS SUBSET OF BCD.
+	BACD+  	=> BACD IS NOT A CANDIDATE KEY SINCE BA IS SUBSET OF BACD.
+	CANDIDATE KEY={BA,BC,BD}
+-----------------------------------------------------------------------------------------
+P: For R:{A,B,C,D,E} FD:{A->BC, CD->E, B->D, E->A}
+Sol:
+	Given, R:{A,B,C,D,E}
+	FD:
+		A->BC
+		CD->E
+		B->D
+		E->A
+	X={}
+	Y={}
+	Z={A,B,C,D,E}
+	SINCE X IS EMPTY 
+	L={A,B,C,D,E,AB,AC,AD,AE,BC,BD,BE,CD,CE,DE,ABC,ABD,ABE,ACD,ACE,ADE,BCD,BCE,BDE,CDE,ABCD,ABCE,ACDE,BCDE,ABCDE}
+	A+=ABCDE
+	B+=BD
+	C+=C
+	D+=D
+	E+=EABCD
+	AB,AC,AD,AE,ABC,ABD,ABE,ACD,ACE,ADE,ABCD,ABCE,ACDE,ABCDE - are not a candidate keys
+	BC+->BCDEA
+	BD+->BD
+	BE,DE - NOT A CANDIDATE KEY
+	CD+->CDEAB
+	BCD,BCE,BDE,CDE,BCDE - are NOT A CANDIATE KEYs.
+========================================================================================
+=>Lossless Decomposition: perform the decomposition in such a way that every sub relation should contain at least one common attribute.
+
+	R(A,B,C) is divided into R1(A,B) AND R2(B,C)
+	A B C			A B	B C
+	1 2 1			1 2	2 1	
+	2 2 2			2 2	2 2
+	3 3 2			3 3	3 2
+
+	Perform Natural join on two relations such that it has to yield the original 	relation then it is considered as valid decomposition.
+	
+	A B C
+	1 2 1
+	1 2 2
+	2 2 1
+	2 2 2
+	3 3 2
+R1 natural join R2 results the following tuples
+A B C
+1 2 1
+1 2 2
+2 2 1
+2 2 2
+3 3 2   
+
+Flaw data has been generated which resulted in inconsistent data. this type decomposition is lossy join.
+
+Decomposition has to be performed in such a way that the following rules have to be followed.
+	* attributes of R1 Union attributes of R2 = attributes of R.
+	* attributes of R1 integration attributes of R2 is not equal to null set.
+	* common attribute of R1 and R2 must be a super key or candidate key.
+	
+now divide the above R(A,B,C) into R1(A,B) and R2(A,C)
+A B		A C
+1 2		1 1
+2 2		2 2
+3 3		3 2
+	
+Perform Natural Join on R1 and R2
+	A B C
+	1 2 1
+	2 2 2
+	3 3 2
+	
+	this has generated the original relation => this is a lossless decomposition.
+========================================================================================
+=>Dependency Preserving Decomposition: 
+	Functional dependencies should be satisfied even after splitting relations. A 		Decomposition D = { R1, R2, R3….Rn } of R is dependency preserving wrt a set F of 	Functional dependency if (F1 ∪ F2 ∪ … ∪ Fm)+ = F+.
+
+Consider a relation R R ---> F{...with some functional dependency(FD)....} R is decomposed or divided into R1 with FD { f1 } and R2 with { f2 }, then there can be three cases:
+	* f1 U f2 = F -----> Decomposition is dependency preserving.
+	* f1 U f2 is a subset of F -----> Not Dependency preserving.
+	* f1 U f2 is a super set of F -----> This case is not possible.
+	
+	Example: R(A,B,C) FD:{A->B,A->C}, Decomposition of R: R1(A,B) R2(B,C). Does this 	decomposition preserves the given dependencies.
+	Sol:
+	Given R(A,B,C) and FD:{A->B,A->C} 
+	Decomposition of R into R1(A,B) and R2(B,C)	
+	
+	R1(A,B)
+	A+=ABC (Strike of A (TD) and C (not part of R1)) => A->B
+	B+=B   (Strike of B (TD))
+	AB+=ABC(Strike of AB(TD)) and C(not part of R1))
+	FD1:{A->B}
+	
+	R2(B,C)
+	B+=B   (Strike of B (TD))
+	C+=C   (Strike of C (TD))
+	BC+=BC (Strike of BC(TD))
+	FD2:{}
+
+	FD1 U FD2 = {A->B}
+	=> FD1 U FD2 is not equal to FD1, therefore dependency is not preserved.
+=========================================================================================
+	Example: R(A,B,C) FD:{A->B,B->C}, Decomposition of R: R1(A,B) R2(B,C). 
+	Does this decomposition preserves the given dependencies.
+=========================================================================================
+ Example: R(A,B,C,D,E) FD:{A->B,B->C,C->D,D->A}, Decomposition of R:R1(A,B,C) 
+ R2(C,D,E). Does this decomposition preserves the given dependencies.
+Sol: 
+	Given R(A,B,C,D,E) and FD:{A->B,B->C,C->D,D->A}
+	Decomposition of R into R1(A,B,C) R2(C,D,E)
+	
+	R1(A,B,C)
+	A+=ABCD		(Strike of A  (TD) and D (Not in R1))	A->BC
+	B+=BCDA		(Strike of B  (TD) and D (Not in R1))	B->CA
+	C+=CDAB		(Strike of C  (TD) and D (Not in R1))	C->AB
+	AB+=ABCD	(Strike of AB (TD) and D (Not in R1))	AB->C (duplicate)
+	AC+=ACDB	(Strike of AC (TD) and D (Not in R1))	AC->B (duplicate)
+	BC+=BCDA	(Strike of BC (TD) and D (Not in R1))	BC->A (duplicate)
+	
+	FD1:{A->BC,B->CA,C->AB}
+
+	R2(C,D,E)
+	C+=CDAB		(Strike of C  (TD) and A,B (Not in R2))	C->D
+	D+=DABC		(Strike of D  (TD) and A,B (Not in R2))	D->C
+	E+=E		(Strike of C  (TD))			E->nothing
+	CD+=CDAB	(Strike of CD (TD) and A,B (Not in R2))	CD->nothing
+	DE+=DEABC	(Strike of DE (TD) and A,B (Not in R2))	DE->C (duplicate)
+	CE+=CEDAB	(Strike of CE (TD) and A,B (Not in R2)) CE->D (duplicate)
+
+	FD2:{C->D,D->C}
+
+	
+	FD1 U FD2 = {A->BC,B->CD,C->AB,C->D,D->C}
+	FD = {A->B,B->C,C->D,D->A}
+
+	Since FD1 U FD2 Covers FD, it is valid dependency preservation.
+=========================================================================================
+Example: R(A,B,C,D,E) FD:{A->BCD,B->AE,BC->ACD,D->E,C->DE}, Decompose into R1(A,B), R2(B,C), R3(C,D,E). Does this decomposition preserves the given dependencies.
+=========================================================================================
+Example: R(A,B,C,D,E) FD:{A->BCDE, BC->AED, D->E}, Decompose into R1(A,B), 
+R2(B,C), R3(C,D,E). Does this decomposition preserves the given dependencies.
+=========================================================================================
+Example: R(A,B,C,D) FD:{A->B,B->C,C->D,D->A}, Decompose into R1(A,B), R2(B,C),
+ R3(C,D). Does this decomposition preserves the given dependencies.
+=========================================================================================
+
+First Normal Form:1NF: The first rule of database normalization.
+A table is in 1NF if:
+	* All attributes (columns) have atomic values — no multiple values in one cell.
+	* There are no repeating groups — each column should hold only one type of information.
+	* Each record (row) is unique — usually ensured by a primary key.
+
+Example:Student(sid, sname, address, mobile_no)
+---------------------------------------------------------------------
+sid	sname	address (city, state, pincode)	mobile_no
+---------------------------------------------------------------------
+101	Alice	Delhi, Delhi, 110001		9876543210, 9123456780
+102	Bob	Mumbai, Maharashtra, 400001	9988776655
+103	Charlie	Kolkata, West Bengal, 700001	9000011122, 9333344444
+----------------------------------------------------------------------
+Not in 1NF:
+	* address is a composite attribute (contains multiple sub-values in a single column).
+	* mobile_no is a multi-valued attribute (multiple numbers in one cell).
+Convert to 1NF:
+	* address into separate atomic columns: city, state, pincode
+	* mobile_no into separate rows (one per number)
+----------------------------------------------------------
+sid	sname	city	state		pincode	mobile_no
+----------------------------------------------------------
+1	Alice	Delhi	Delhi		110001	9876543210
+1	Alice	Delhi	Delhi		110001	9123456780
+2	Bob	Mumbai	Maharashtra	400001	9988776655
+3	Charlie	Kolkata	West Bengal	700001	9000011122
+3	Charlie	Kolkata	West Bengal	700001	9333344444
+----------------------------------------------------------
+In 1 NF:
+	All attributes are atomic (1 value per column)
+	No composite or multi-valued fields
+	Table is in First Normal Form (1NF)
+
+Other ways are 
+	* adding mutiple columns for each mobile number, but this leads to null values.
+	* maintaing separte tables for multi-valued filed. (sid,mobile_no).
+
+Uses of 1NF:
+	* Atomicity: Breaking down data into indivisible chunks allows for more efficient querying and updating.
+	* No Repeating Groups: Avoids redundancy and inconsistency.
+=========================================================================================
+Second Normal Form: 2NF: 
+A table is in 2NF if:
+	* It is already in 1NF
+	* All non-pime attributes are fully functionally dependent on the entire primary 	key (No partial dependencies)
+---------------------------------------------------------------------------
+StudentID	CourseID	StudentName	CourseName	Instructor
+---------------------------------------------------------------------------
+1		C1		Alice		C		Dr. Smith
+1		C2		Alice		C++		Dr. Clark
+2		C1		Bob		C		Dr. Smith
+3		C3		Charlie		JAVA		Dr. Green
+3		C2		Charlie		C++		Dr. Clark
+---------------------------------------------------------------------------
+Primary Key: (StudentID, CourseID)
+
+Not in 2NF.
+	* StudentName depends only on StudentID → partial dependency
+	* CourseName and Instructor depend only on CourseID → partial dependency
+
+Partial Dependency? 
+If a table has a composite primary key (made of 2 or more attributes), and a non-prime attribute depends on only one part of that key, that's a partial dependency — and a violation of 2NF.
+
+Decompose the table into sub relations.. (How Many?)..
+
+
+The above relation can be decomposed into three sub relations..
+	- Students(StudentID,StudentName)
+	- Courses(CourseID,CourseName,Instructor)
+	- Enrollment(StudentID,CourseID)
+----------------------------
+StudentID	StudentName
+----------------------------
+1		Alice
+2		Bob
+3		Charlie
+----------------------------
+------------------------------------------
+CourseID	CourseName	Instructor
+------------------------------------------
+C1		C		Dr. Smith
+C2		C++		Dr. Clark
+C3		JAVA		Dr. Green
+------------------------------------------
+-------------------------
+StudentID	CourseID
+-------------------------
+1		C1
+1		C2
+2		C1
+3		C3
+3		C2
+-------------------------
+
+Now in 2 NF.
+	* No partial dependencies
+	* All non-key attributes depend fully on their table’s primary key
+
+2NF Uses:
+	* Remove redundant data
+	* Avoid update/insertion/deletion anomalies
+	* Ensure each attribute describes the whole key
+=========================================================================================
+Third Normal Form: 3NF:
+A relation is in Third Normal Form (3NF) if:
+	* It is in Second Normal Form (2NF)
+	* No transitive dependency exists on non-prime attributes (i.e., non-prime 	attributes should depend only on the primary key, not on other non-key 	attributes)
+
+In the above example: No issue with Students and Enrollment Realtions.
+------------------------------------------
+CourseID	CourseName	Instructor
+------------------------------------------
+C1		C		Dr. Smith
+C2		C++		Dr. Clark
+C3		JAVA		Dr. Green
+------------------------------------------
+For Courses(CourseID,CourseName,Instructor)
+	CourseID->CourseName
+	CourseID->Instructor
+	CourseID->CourseName,Instructor
+	CourseID,CourseName->Instructor
+	CourseID,Instructor->CourseName
+	CourseName->Instructor --> Here CourseName is not prime attribute, but it 		is having a valid FD, this results in voilation on 3NF.
+	
+	Therefore, decompose Courses Table into 
+	Courses(CourseID,CourseName), 	
+	CourseInstructors(CourseID,Instructor)
+Students
+----------------------------
+StudentID	StudentName
+----------------------------
+1		Alice
+2		Bob
+3		Charlie
+---------------------------
+Courses
+---------------------------
+CourseID	CourseName	
+---------------------------
+C1		C		
+C2		C++		
+C3		JAVA		
+---------------------------
+CourseInstructors
+-----------------------------
+CourseID	Instructor
+-----------------------------
+C1		Dr. Smith
+C2		Dr. Clark
+C3		Dr. Green
+-----------------------------
+Enrollments
+-------------------------
+StudentID	CourseID
+-------------------------
+1		C1
+1		C2
+2		C1
+3		C3
+3		C2
+-------------------------
+
+Uses:
+	* Better data integrity
+	* Avoids update anomalies
+	* Less redundancy
+	* Clearer relationships between entities
+
+Example: For Practice: Students Relation, StudentID is Primary Key.
+---------------------------------------------------------
+StudentID	StudentName	Department	HOD
+---------------------------------------------------------
+1		Alice		CSE		Dr. Smith
+2		Bob		ECE		Dr. Clark
+3		Charlie		CSE		Dr. Smith
+---------------------------------------------------------
+
+
+
+
+
+
+
+
